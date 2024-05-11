@@ -4,6 +4,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <stack>
 
 using namespace std;
 
@@ -12,9 +13,45 @@ enum nonterm{CODE, VDECL, ASSIGN, RHS, EXPR, TERM, FACTOR, FDECL, ARG, MOREARGS,
 
 pair<char, int> ACTION[74][21];
 int G0T0[74][16];
+pair<int, int> reduction[33]; // first : GOTO table의 column값.     second : pop할 개수
 
-void InitializeGOTO()
-{
+void init_reduction(){
+    reduction[0].first = CODE; reduction[0].second = 2;         // CODE -> VDECL CODE
+    reduction[1].first = CODE; reduction[1].second = 2;         // CODE -> FDECL CODE 
+    reduction[2].first = CODE; reduction[2].second = 1;         // CODE -> epsilon
+    reduction[3].first = VDECL; reduction[3].second = 3;        // VDECL -> vtype id semi
+    reduction[4].first = VDECL; reduction[4].second = 3;        // VDECL -> vtype ASSIGN semi
+    reduction[5].first = ASSIGN; reduction[5].second = 3;       // ASSIGN -> id assign RHS
+    reduction[6].first = RHS; reduction[6].second = 1;          // RHS -> EXPR
+    reduction[7].first = RHS; reduction[7].second = 1;          // RHS -> literal
+    reduction[8].first = RHS; reduction[8].second = 1;          // RHS -> character
+    reduction[9].first = RHS; reduction[9].second = 1;          // RHS -> boolstr
+    reduction[10].first = EXPR; reduction[10].second = 3;       // EXPR -> EXPR addsub TERM
+    reduction[11].first = EXPR; reduction[11].second = 1;       // EXPR -> TERM
+    reduction[12].first = EXPR; reduction[12].second = 3;       // EXPR -> lparen EXPR rparen
+    reduction[13].first = TERM; reduction[13].second = 3;       // TERM -> multdiv FACTOR
+    reduction[14].first = TERM; reduction[14].second = 1;       // TERM -> FACTOR
+    reduction[15].first = FACTOR; reduction[15].second = 1;     // FACTOR -> id
+    reduction[16].first = FACTOR; reduction[16].second = 1;     // FACTOR -> num
+    reduction[17].first = FDECL; reduction[17].second = 9;      // FDECL -> vtype id lparen ARG rparen lbrace BLOCK RETURN rbrace
+    reduction[18].first = ARG; reduction[18].second = 3;        // ARG -> vtype id MOREARGS
+    reduction[19].first = ARG; reduction[19].second = 1;        // ARG -> epsilon
+    reduction[20].first = MOREARGS; reduction[20].second = 4;   // MOREARGS -> comma vtype id MOREARGS
+    reduction[21].first = MOREARGS; reduction[21].second = 1;   // MOREARGS -> epsilon
+    reduction[22].first = BLOCK; reduction[22].second = 2;      // BLOCK -> STMT BLOCK
+    reduction[23].first = BLOCK; reduction[23].second = 1;      // BLOCK -> epsilon
+    reduction[24].first = STMT; reduction[24].second = 1;       // STMT -> VDECL
+    reduction[25].first = STMT; reduction[25].second = 2;       // STMT -> ASSIGN semi
+    reduction[26].first = STMT; reduction[26].second = 8;       // STMT -> if lparen COND rparen lbrace BLOCK rbrace ELSE
+    reduction[27].first = STMT; reduction[27].second = 7;       // STMT -> while lparen COND rparen lbrace BLOCK rbrace
+    reduction[28].first = COND; reduction[28].second = 3;       // COND -> COND comp boolstr
+    reduction[29].first = COND; reduction[29].second = 1;       // COND -> boolstr
+    reduction[30].first = ELSE; reduction[30].second = 4;       // ELSE -> else lbrace BLOCK rbrace
+    reduction[31].first = ELSE; reduction[31].second = 1;       // ELSE -> epsilon
+    reduction[32].first = RETURN; reduction[32].second = 3;     // RETURN -> return RHS semi
+}
+
+void InitializeGOTO(){
     G0T0[0][VDECL] = 1;
     G0T0[1][CODE] = 3;
     G0T0[1][VDECL] = 1;
@@ -112,6 +149,30 @@ void init_ACTION(){
     ACTION[1][dollor] = {'r', 2}; ACTION[3][dollor] = {'a', 0}; ACTION[4][dollor] = {'r', 2}; ACTION[7][dollor] = {'r', 1}; ACTION[9][dollor] = {'r', 3}; ACTION[11][dollor] = {'r', 4}; ACTION[52][dollor] = {'r', 17};
 }
 
+void push_item(vector<int> &v, string s){
+    if (s == "vtype") v.push_back(vtype);
+    else if (s == "num") v.push_back(num);
+    else if (s == "character") v.push_back(character);
+    else if (s == "boolstr") v.push_back(boolstr);
+    else if (s == "literal") v.push_back(literal);
+    else if (s == "id") v.push_back(id);
+    else if (s == "if") v.push_back(iff);
+    else if (s == "else") v.push_back(elsee);
+    else if (s == "while") v.push_back(whilee);
+    else if (s == "return") v.push_back(returnn);
+    //else if (s == "class") ?
+    else if (s == "addsub") v.push_back(addsub);
+    else if (s == "multdiv") v.push_back(multdiv);
+    else if (s == "assign") v.push_back(assign);
+    else if (s == "comp") v.push_back(comp);
+    else if (s == "semi") v.push_back(semi);
+    else if (s == "comma") v.push_back(comma);
+    else if (s == "lparen") v.push_back(lparen);
+    else if (s == "rparen") v.push_back(rparen);
+    else if (s == "lbrace") v.push_back(lbrace);
+    else if (s == "rbrace") v.push_back(rbrace);
+}
+
 int main(int argc, char* argv[]){
     // input이 없는 경우
     if(argc == 1){
@@ -139,12 +200,12 @@ int main(int argc, char* argv[]){
     getline(myfile, input);
 
     // token 넣기
-    vector<string> tokens;
+    vector<int> tokens;
     string temp = "";
     for(int i = 0 ; i < input.length(); i++){
         if(input[i] == ' '){
             if(temp != "") {
-                tokens.push_back(temp);
+                push_item(tokens, temp);
                 temp = "";
             }
         }
@@ -152,14 +213,37 @@ int main(int argc, char* argv[]){
             if(input[i] != ' '){
                 temp += input[i];
             }
-            tokens.push_back(temp);
+            push_item(tokens, temp);
         }
         else temp += input[i];
     } 
-    
-    //for(vector<string>::iterator it = tokens.begin(); it != tokens.end(); it++){
-    //    cout << (*it) << endl;
-    //}
+
+    // SLR Parsing
+    stack<int> st;
+
+    st.push(0); // stack initialization
+    int pointer = 0; // input pointer initialization
+
+    while(!st.empty()){
+        int input_data = s[pointer];
+        pair<char, int> table_value = ACTION[st.top()][input_data];
+        
+        if(table_value.first == 's'){       // shift
+            pointer++;
+            s.push_back(table_value.second);
+        }
+        else if(table_value.first == 'r'){  // reduce
+            int pop_cnt = reduction[table_value.second].second;
+            for(int i = 0; i < pop_cnt; i++) st.pop();
+
+            int push_value = G0T0[st.top()][table_value.first];
+            st.push(push_value);
+        }
+        else if(table_value.first == 'a'){  // accept
+            
+            st.pop();
+        }
+    }
 
     return 0;
 }
