@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 using namespace std;
@@ -9,7 +10,7 @@ using namespace std;
 enum term{vtype, id, semi, assign, literal, character, boolstr, addsub, multdiv, lparen, rparen, num, lbrace, rbrace, comma, iff, whilee, comp, elsee, returnn, dollor};
 enum nonterm{CODE, VDECL, ASSIGN, RHS, EXPR, EXPR_, FDECL, ARG, MOREARGS, BLOCK, STMT, COND, COND_, ELSE, RETURN};
 
-int ACTION[78][21];
+pair<char, int> ACTION[78][21];
 int G0T0[78][15];
 
 int main(int argc, char* argv[]){
