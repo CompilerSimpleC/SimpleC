@@ -8,7 +8,7 @@
 using namespace std;
 
 enum term{vtype, id, semi, assign, literal, character, boolstr, addsub, multdiv, lparen, rparen, num, lbrace, rbrace, comma, iff, whilee, comp, elsee, returnn, dollor};
-enum nonterm{CODE, VDECL, ASSIGN, RHS, EXPR, EXPT, TERM, FACTOR, FDECL, ARG, MOREARGS, BLOCK, STMT, COND, COND_, ELSE, RETURN};
+enum nonterm{CODE, VDECL, ASSIGN, RHS, EXPR, TERM, FACTOR, FDECL, ARG, MOREARGS, BLOCK, STMT, COND, COND_, ELSE, RETURN};
 
 pair<char, int> ACTION[74][21];
 int G0T0[74][16];
@@ -65,6 +65,51 @@ void InitializeGOTO()
     G0T0[71][ASSIGN] = 40;
     G0T0[71][BLOCK] = 72;
     G0T0[71][STMT] = 38;
+}
+
+void init_ACTION(){
+    // vtype
+    ACTION[0][vtype] = {'s', 2}; ACTION[1][vtype] = {'s', 5}; ACTION[4][vtype] = {'s', 5}; ACTION[10][vtype] = {'r', 3}; ACTION[12][vtype] = {'r', 4}; ACTION[13][vtype] = {'s', 25}; ACTION[34][vtype] = {'s', 2}; ACTION[36][vtype] = {'s', 44}; ACTION[38][vtype] = {'s', 2}; ACTION[39][vtype] = {'r', 24}; ACTION[48][vtype] = {'r', 25}; ACTION[52][vtype] = {'r', 17}; ACTION[62][vtype] = {'s', 2}; ACTION[64][vtype] = {'s', 2}; ACTION[67][vtype] = {'r', 31}; ACTION[68][vtype] = {'r', 27}; ACTION[69][vtype] = {'r', 26}; ACTION[71][vtype] = {'s', 2}; ACTION[73][vtype] = {'r', 30};
+    // id
+    ACTION[2][id] = {'s', 6}; ACTION[5][id] = {'s', 9}; ACTION[10][id] = {'r', 3}; ACTION[11][id] = {'s', 22}; ACTION[12][id] = {'r', 4}; ACTION[20][id] = {'s', 22}; ACTION[25][id] = {'s', 30}; ACTION[26][id] = {'s', 22}; ACTION[27][id] = {'s', 22}; ACTION[34][id] = {'s', 43}; ACTION[38][id] = {'s', 43}; ACTION[39][id] = {'r', 24}; ACTION[44][id] = {'s', 51}; ACTION[46][id] = {'s', 22}; ACTION[48][id] = {'r', 25}; ACTION[62][id] = {'s', 43}; ACTION[64][id] = {'s', 43}; ACTION[67][id] = {'r', 31}; ACTION[68][id] = {'r', 27}; ACTION[69][id] = {'r', 26}; ACTION[71][id] = {'s', 43}; ACTION[73][id] = {'r', 30}; 
+    // semi
+    ACTION[6][semi] = {'s', 10}; ACTION[7][semi] = {'s', 12}; ACTION[9][semi] = {'s', 10}; ACTION[14][semi] = {'r', 5}; ACTION[15][semi] = {'r', 6}; ACTION[16][semi] = {'r', 7}; ACTION[17][semi] = {'r', 8}; ACTION[18][semi] = {'r', 9}; ACTION[19][semi] = {'r', 11}; ACTION[21][semi] = {'r', 14}; ACTION[22][semi] = {'r', 15}; ACTION[23][semi] = {'r', 16}; ACTION[31][semi] = {'r', 10}; ACTION[32][semi] = {'r', 13}; ACTION[33][semi] = {'r', 12}; ACTION[40][semi] = {'s', 48}; ACTION[53][semi] = {'s', 58};
+    // assign
+    ACTION[6][assign] = {'s', 11}; ACTION[9][assign] = {'s', 11}; ACTION[43][assign] = {'s', 11};
+    // literal
+    ACTION[11][literal] = {'s', 16}; ACTION[46][literal] = {'s', 16};
+    // character
+    ACTION[11][character] = {'s', 17}; ACTION[46][character] = {'s', 17};
+    // boolstr
+    ACTION[11][boolstr] = {'s', 18}; ACTION[46][boolstr] = {'s', 18}; ACTION[49][boolstr] = {'s', 55}; ACTION[50][boolstr] = {'s', 55}; ACTION[60][boolstr] = {'s', 63};
+    // addsub
+    ACTION[15][addsub] = {'s', 26}; ACTION[19][addsub] = {'r', 11}; ACTION[21][addsub] = {'r', 12}; ACTION[22][addsub] = {'r', 15}; ACTION[23][addsub] = {'r', 16}; ACTION[28][addsub] = {'s', 26}; ACTION[31][addsub] = {'r', 10}; ACTION[32][addsub] = {'r', 13}; ACTION[33][addsub] = {'r', 12};
+    // lparen
+    ACTION[9][lparen] = {'s', 13}; ACTION[11][lparen] = {'s', 20}; ACTION[20][lparen] = {'s', 20}; ACTION[41][lparen] = {'s', 49}; ACTION[42][lparen] = {'s', 50}; ACTION[46][lparen] = {'s', 20};
+    // rparen
+    ACTION[13][lparen] = {'r', 19}; ACTION[19][rparen] = {'r', 11}; ACTION[21][rparen] = {'r', 14}; ACTION[22][rparen] = {'r', 15}; ACTION[23][rparen] = {'r', 16}; ACTION[24][rparen] = {'s', 29}; ACTION[28][rparen] = {'s', 33}; ACTION[30][rparen] = {'r', 21}; ACTION[31][rparen] = {'r', 10}; ACTION[32][rparen] = {'r', 13}; ACTION[33][rparen] = {'r', 12}; ACTION[35][rparen] = {'r', 18}; ACTION[51][rparen] = {'r', 21}; ACTION[54][rparen] = {'s', 59}; ACTION[55][rparen] = {'r', 29}; ACTION[56][rparen] = {'s', 61}; ACTION[57][rparen] = {'r', 20}; ACTION[63][rparen] = {'r', 28};
+    // multdiv
+    ACTION[19][multdiv] = {'s', 27}; ACTION[21][multdiv] = {'r', 14}; ACTION[22][multdiv] = {'r', 15}; ACTION[23][multdiv] = {'r', 16}; ACTION[31][multdiv] = {'s', 27}; ACTION[32][multdiv] = {'r', 13};
+    // num
+    ACTION[11][multdiv] = {'s', 23}; ACTION[20][num] = {'s', 23}; ACTION[26][num] = {'s', 23}; ACTION[27][num] = {'s', 23}; ACTION[46][num] = {'s', 23};
+    // lbrace
+    ACTION[29][lbrace] = {'s', 34}; ACTION[59][lbrace] = {'s', 62}; ACTION[61][lbrace] = {'s', 64}; ACTION[70][lbrace] = {'s', 71};
+    // rbrace
+    ACTION[10][rbrace] = {'r', 3}; ACTION[12][rbrace] = {'r', 4}; ACTION[34][rbrace] = {'r', 23}; ACTION[38][rbrace] = {'r', 23}; ACTION[39][rbrace] = {'r', 24}; ACTION[45][rbrace] = {'s', 52}; ACTION[47][rbrace] = {'r', 22}; ACTION[48][rbrace] = {'r', 25}; ACTION[58][rbrace] = {'r', 32}; ACTION[62][rbrace] = {'r', 23}; ACTION[64][rbrace] = {'r', 23}; ACTION[65][rbrace] = {'s', 67}; ACTION[66][rbrace] = {'s', 68}; ACTION[67][rbrace] = {'r', 31}; ACTION[68][rbrace] = {'r', 27}; ACTION[69][rbrace] = {'r', 26}; ACTION[71][rbrace] = {'r', 23}; ACTION[72][rbrace] = {'s', 73}; ACTION[73][rbrace] = {'r', 30}; 
+    // comma
+    ACTION[30][comma] = {'s', 36}; ACTION[51][comma] = {'s', 36};
+    // iff
+    ACTION[10][iff] = {'r', 3}; ACTION[12][iff] = {'r', 4}; ACTION[34][iff] = {'s', 41}; ACTION[38][iff] = {'s', 41}; ACTION[39][iff] = {'r', 24}; ACTION[48][iff] = {'r', 25}; ACTION[62][iff] = {'s', 41}; ACTION[64][iff] = {'s', 41}; ACTION[67][iff] = {'r', 31}; ACTION[68][iff] = {'r', 27}; ACTION[69][iff] = {'r', 26}; ACTION[71][iff] = {'s', 41}; ACTION[73][iff] = {'r', 30};
+    // whilee
+    ACTION[10][whilee] = {'r', 3}; ACTION[12][whilee] = {'r', 4}; ACTION[34][whilee] = {'s', 42}; ACTION[38][whilee] = {'s', 42}; ACTION[39][whilee] = {'r', 24}; ACTION[48][whilee] = {'r', 25}; ACTION[62][whilee] = {'s', 42}; ACTION[64][whilee] = {'s', 42}; ACTION[67][whilee] = {'r', 31}; ACTION[68][whilee] = {'r', 27}; ACTION[69][whilee] = {'r', 26}; ACTION[71][whilee] = {'s', 42}; ACTION[73][whilee] = {'r', 30};
+    // comp
+    ACTION[54][comp] = {'s', 60}; ACTION[55][comp] = {'r', 29}; ACTION[56][comp] = {'s', 60}; ACTION[63][comp] = {'r', 28};
+    // elsee
+    ACTION[67][elsee] = {'s', 70};
+    // returnn
+    ACTION[10][returnn] = {'r', 3}; ACTION[12][returnn] = {'r', 4}; ACTION[34][returnn] = {'r', 23}; ACTION[37][returnn] = {'s', 46}; ACTION[38][returnn] = {'r', 23}; ACTION[39][returnn] = {'r', 24}; ACTION[47][returnn] = {'r', 22}; ACTION[48][returnn] = {'r', 25}; ACTION[62][returnn] = {'r', 23}; ACTION[64][returnn] = {'r', 23}; ACTION[67][returnn] = {'r', 31}; ACTION[68][returnn] = {'r', 27}; ACTION[69][returnn] = {'r', 26}; ACTION[71][returnn] = {'r', 23}; ACTION[73][returnn] = {'r', 30};
+    // dollor
+    ACTION[1][dollor] = {'r', 2}; ACTION[3][dollor] = {'a', 0}; ACTION[4][dollor] = {'r', 2}; ACTION[7][dollor] = {'r', 1}; ACTION[9][dollor] = {'r', 3}; ACTION[11][dollor] = {'r', 4}; ACTION[52][dollor] = {'r', 17};
 }
 
 int main(int argc, char* argv[]){
