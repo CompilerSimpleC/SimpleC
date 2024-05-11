@@ -32,7 +32,6 @@ int main(int argc, char* argv[]){
     
     string input;
     getline(myfile, input);
-    cout << input;
 
     vector<string> tokens;
     string temp = "";
@@ -42,6 +41,12 @@ int main(int argc, char* argv[]){
                 tokens.push_back(temp);
                 temp = "";
             }
+        }
+        else if(i == input.length() - 1){
+            if(input[i] != ' '){
+                temp += input[i];
+            }
+            tokens.push_back(temp);
         }
         else temp += input[i];
     } 
