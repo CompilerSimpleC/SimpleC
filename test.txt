@@ -1,1 +1,1 @@
-asdf hello world nice to meet you
+vtype id semi vtype id lparen rparen lbrace if lparen boolstr comp boolstr rparen lbrace rbrace return literal semi rbrace
