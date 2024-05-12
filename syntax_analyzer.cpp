@@ -174,6 +174,7 @@ void push_item(vector<int> &v, string s){
 }
 
 int main(int argc, char* argv[]){
+    // initialization of tables
     init_ACTION();
     init_reduction();
     InitializeGOTO();
@@ -223,8 +224,6 @@ int main(int argc, char* argv[]){
     } 
     tokens.push_back(dollor);
     
-    //for(vector<int>::iterator it = tokens.begin(); it != tokens.end() ; it++) cout << (*it) << endl;
-
     // SLR Parsing
     stack<int> st;
 
