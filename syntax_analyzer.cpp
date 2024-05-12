@@ -11,9 +11,9 @@ using namespace std;
 enum term{vtype, id, semi, assign, literal, character, boolstr, addsub, multdiv, lparen, rparen, num, lbrace, rbrace, comma, iff, whilee, comp, elsee, returnn, dollor};
 enum nonterm{CODE, VDECL, ASSIGN, RHS, EXPR, TERM, FACTOR, FDECL, ARG, MOREARGS, BLOCK, STMT, COND, COND_, ELSE, RETURN};
 
-pair<char, int> ACTION[74][21];
-int G0T0[74][16];
-pair<int, int> reduction[33]; // first : GOTO table의 column값.     second : pop할 개수
+pair<char, int> ACTION[74][21];     // row : state       column : terminals
+int G0T0[74][16];                   // row : state       column : non terminals
+pair<int, int> reduction[33];       // first : GOTO table의 column값.     second : pop할 개수
 
 void init_reduction(){
     reduction[0].first = CODE; reduction[0].second = 2;         // CODE -> VDECL CODE
