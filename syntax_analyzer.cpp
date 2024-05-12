@@ -18,7 +18,7 @@ pair<int, int> reduction[33]; // first : GOTO table의 column값.     second : p
 void init_reduction(){
     reduction[0].first = CODE; reduction[0].second = 2;         // CODE -> VDECL CODE
     reduction[1].first = CODE; reduction[1].second = 2;         // CODE -> FDECL CODE 
-    reduction[2].first = CODE; reduction[2].second = 1;         // CODE -> epsilon
+    reduction[2].first = CODE; reduction[2].second = 0;         // CODE -> epsilon
     reduction[3].first = VDECL; reduction[3].second = 3;        // VDECL -> vtype id semi
     reduction[4].first = VDECL; reduction[4].second = 3;        // VDECL -> vtype ASSIGN semi
     reduction[5].first = ASSIGN; reduction[5].second = 3;       // ASSIGN -> id assign RHS
@@ -29,17 +29,17 @@ void init_reduction(){
     reduction[10].first = EXPR; reduction[10].second = 3;       // EXPR -> EXPR addsub TERM
     reduction[11].first = EXPR; reduction[11].second = 1;       // EXPR -> TERM
     reduction[12].first = EXPR; reduction[12].second = 3;       // EXPR -> lparen EXPR rparen
-    reduction[13].first = TERM; reduction[13].second = 3;       // TERM -> multdiv FACTOR
+    reduction[13].first = TERM; reduction[13].second = 3;       // TERM -> TERM multdiv FACTOR
     reduction[14].first = TERM; reduction[14].second = 1;       // TERM -> FACTOR
     reduction[15].first = FACTOR; reduction[15].second = 1;     // FACTOR -> id
     reduction[16].first = FACTOR; reduction[16].second = 1;     // FACTOR -> num
     reduction[17].first = FDECL; reduction[17].second = 9;      // FDECL -> vtype id lparen ARG rparen lbrace BLOCK RETURN rbrace
     reduction[18].first = ARG; reduction[18].second = 3;        // ARG -> vtype id MOREARGS
-    reduction[19].first = ARG; reduction[19].second = 1;        // ARG -> epsilon
+    reduction[19].first = ARG; reduction[19].second = 0;        // ARG -> epsilon
     reduction[20].first = MOREARGS; reduction[20].second = 4;   // MOREARGS -> comma vtype id MOREARGS
-    reduction[21].first = MOREARGS; reduction[21].second = 1;   // MOREARGS -> epsilon
+    reduction[21].first = MOREARGS; reduction[21].second = 0;   // MOREARGS -> epsilon
     reduction[22].first = BLOCK; reduction[22].second = 2;      // BLOCK -> STMT BLOCK
-    reduction[23].first = BLOCK; reduction[23].second = 1;      // BLOCK -> epsilon
+    reduction[23].first = BLOCK; reduction[23].second = 0;      // BLOCK -> epsilon
     reduction[24].first = STMT; reduction[24].second = 1;       // STMT -> VDECL
     reduction[25].first = STMT; reduction[25].second = 2;       // STMT -> ASSIGN semi
     reduction[26].first = STMT; reduction[26].second = 8;       // STMT -> if lparen COND rparen lbrace BLOCK rbrace ELSE
@@ -47,7 +47,7 @@ void init_reduction(){
     reduction[28].first = COND; reduction[28].second = 3;       // COND -> COND comp boolstr
     reduction[29].first = COND; reduction[29].second = 1;       // COND -> boolstr
     reduction[30].first = ELSE; reduction[30].second = 4;       // ELSE -> else lbrace BLOCK rbrace
-    reduction[31].first = ELSE; reduction[31].second = 1;       // ELSE -> epsilon
+    reduction[31].first = ELSE; reduction[31].second = 0;       // ELSE -> epsilon
     reduction[32].first = RETURN; reduction[32].second = 3;     // RETURN -> return RHS semi
 }
 
@@ -120,15 +120,15 @@ void init_ACTION(){
     // boolstr
     ACTION[11][boolstr] = {'s', 18}; ACTION[46][boolstr] = {'s', 18}; ACTION[49][boolstr] = {'s', 55}; ACTION[50][boolstr] = {'s', 55}; ACTION[60][boolstr] = {'s', 63};
     // addsub
-    ACTION[15][addsub] = {'s', 26}; ACTION[19][addsub] = {'r', 11}; ACTION[21][addsub] = {'r', 12}; ACTION[22][addsub] = {'r', 15}; ACTION[23][addsub] = {'r', 16}; ACTION[28][addsub] = {'s', 26}; ACTION[31][addsub] = {'r', 10}; ACTION[32][addsub] = {'r', 13}; ACTION[33][addsub] = {'r', 12};
+    ACTION[15][addsub] = {'s', 26}; ACTION[19][addsub] = {'r', 11}; ACTION[21][addsub] = {'r', 14}; ACTION[22][addsub] = {'r', 15}; ACTION[23][addsub] = {'r', 16}; ACTION[28][addsub] = {'s', 26}; ACTION[31][addsub] = {'r', 10}; ACTION[32][addsub] = {'r', 13}; ACTION[33][addsub] = {'r', 12};
     // lparen
     ACTION[9][lparen] = {'s', 13}; ACTION[11][lparen] = {'s', 20}; ACTION[20][lparen] = {'s', 20}; ACTION[41][lparen] = {'s', 49}; ACTION[42][lparen] = {'s', 50}; ACTION[46][lparen] = {'s', 20};
     // rparen
-    ACTION[13][lparen] = {'r', 19}; ACTION[19][rparen] = {'r', 11}; ACTION[21][rparen] = {'r', 14}; ACTION[22][rparen] = {'r', 15}; ACTION[23][rparen] = {'r', 16}; ACTION[24][rparen] = {'s', 29}; ACTION[28][rparen] = {'s', 33}; ACTION[30][rparen] = {'r', 21}; ACTION[31][rparen] = {'r', 10}; ACTION[32][rparen] = {'r', 13}; ACTION[33][rparen] = {'r', 12}; ACTION[35][rparen] = {'r', 18}; ACTION[51][rparen] = {'r', 21}; ACTION[54][rparen] = {'s', 59}; ACTION[55][rparen] = {'r', 29}; ACTION[56][rparen] = {'s', 61}; ACTION[57][rparen] = {'r', 20}; ACTION[63][rparen] = {'r', 28};
+    ACTION[13][rparen] = {'r', 19}; ACTION[19][rparen] = {'r', 11}; ACTION[21][rparen] = {'r', 14}; ACTION[22][rparen] = {'r', 15}; ACTION[23][rparen] = {'r', 16}; ACTION[24][rparen] = {'s', 29}; ACTION[28][rparen] = {'s', 33}; ACTION[30][rparen] = {'r', 21}; ACTION[31][rparen] = {'r', 10}; ACTION[32][rparen] = {'r', 13}; ACTION[33][rparen] = {'r', 12}; ACTION[35][rparen] = {'r', 18}; ACTION[51][rparen] = {'r', 21}; ACTION[54][rparen] = {'s', 59}; ACTION[55][rparen] = {'r', 29}; ACTION[56][rparen] = {'s', 61}; ACTION[57][rparen] = {'r', 20}; ACTION[63][rparen] = {'r', 28};
     // multdiv
     ACTION[19][multdiv] = {'s', 27}; ACTION[21][multdiv] = {'r', 14}; ACTION[22][multdiv] = {'r', 15}; ACTION[23][multdiv] = {'r', 16}; ACTION[31][multdiv] = {'s', 27}; ACTION[32][multdiv] = {'r', 13};
     // num
-    ACTION[11][multdiv] = {'s', 23}; ACTION[20][num] = {'s', 23}; ACTION[26][num] = {'s', 23}; ACTION[27][num] = {'s', 23}; ACTION[46][num] = {'s', 23};
+    ACTION[11][num] = {'s', 23}; ACTION[20][num] = {'s', 23}; ACTION[26][num] = {'s', 23}; ACTION[27][num] = {'s', 23}; ACTION[46][num] = {'s', 23};
     // lbrace
     ACTION[29][lbrace] = {'s', 34}; ACTION[59][lbrace] = {'s', 62}; ACTION[61][lbrace] = {'s', 64}; ACTION[70][lbrace] = {'s', 71};
     // rbrace
@@ -146,7 +146,7 @@ void init_ACTION(){
     // returnn
     ACTION[10][returnn] = {'r', 3}; ACTION[12][returnn] = {'r', 4}; ACTION[34][returnn] = {'r', 23}; ACTION[37][returnn] = {'s', 46}; ACTION[38][returnn] = {'r', 23}; ACTION[39][returnn] = {'r', 24}; ACTION[47][returnn] = {'r', 22}; ACTION[48][returnn] = {'r', 25}; ACTION[62][returnn] = {'r', 23}; ACTION[64][returnn] = {'r', 23}; ACTION[67][returnn] = {'r', 31}; ACTION[68][returnn] = {'r', 27}; ACTION[69][returnn] = {'r', 26}; ACTION[71][returnn] = {'r', 23}; ACTION[73][returnn] = {'r', 30};
     // dollor
-    ACTION[1][dollor] = {'r', 2}; ACTION[3][dollor] = {'a', 0}; ACTION[4][dollor] = {'r', 2}; ACTION[7][dollor] = {'r', 1}; ACTION[9][dollor] = {'r', 3}; ACTION[11][dollor] = {'r', 4}; ACTION[52][dollor] = {'r', 17};
+    ACTION[1][dollor] = {'r', 2}; ACTION[3][dollor] = {'a', 0}; ACTION[4][dollor] = {'r', 2}; ACTION[8][dollor] = {'r', 1}; ACTION[10][dollor] = {'r', 3}; ACTION[12][dollor] = {'r', 4}; ACTION[52][dollor] = {'r', 17};
 }
 
 void push_item(vector<int> &v, string s){
@@ -174,6 +174,10 @@ void push_item(vector<int> &v, string s){
 }
 
 int main(int argc, char* argv[]){
+    init_ACTION();
+    init_reduction();
+    InitializeGOTO();
+
     // input이 없는 경우
     if(argc == 1){
         cout << "Error: There's no argument of main function.";
@@ -217,6 +221,9 @@ int main(int argc, char* argv[]){
         }
         else temp += input[i];
     } 
+    tokens.push_back(dollor);
+    
+    //for(vector<int>::iterator it = tokens.begin(); it != tokens.end() ; it++) cout << (*it) << endl;
 
     // SLR Parsing
     stack<int> st;
@@ -225,23 +232,31 @@ int main(int argc, char* argv[]){
     int pointer = 0; // input pointer initialization
 
     while(!st.empty()){
-        int input_data = s[pointer];
+        int input_data = tokens[pointer];
         pair<char, int> table_value = ACTION[st.top()][input_data];
+        cout << st.top() << " " << table_value.first << " " << table_value.second << endl;
         
         if(table_value.first == 's'){       // shift
             pointer++;
-            s.push_back(table_value.second);
+            st.push(table_value.second);
         }
         else if(table_value.first == 'r'){  // reduce
             int pop_cnt = reduction[table_value.second].second;
             for(int i = 0; i < pop_cnt; i++) st.pop();
 
-            int push_value = G0T0[st.top()][table_value.first];
+            int push_value = G0T0[st.top()][reduction[table_value.second].first];
             st.push(push_value);
+            // 여기에 트리 생성
         }
         else if(table_value.first == 'a'){  // accept
-            
-            st.pop();
+            // 여기에 트리 생성   
+            cout << "파싱 끝";
+            break;
+        }
+        else {
+            // 에러처리. 파싱에러
+            cout << "Error: not matched ACTION table at [" << st.top() << ", " << input_data << "]" << endl;
+            return 0;
         }
     }
 
