@@ -30,9 +30,6 @@ public:
     vector<tree*> getchilds(){
         return this->childs;
     }
-    bool getisLeaf(){
-        return this->isLeaf;
-    }
 
     // setter
     void setitem(string s){
@@ -41,13 +38,9 @@ public:
     void setchilds(vector<tree*> c){
         this->childs = c;
     }
-    void setisLeaf(bool b){
-        this->isLeaf = b;
-    }
 private:
-    string item; // type 아직 미지정
+    string item;
     vector<tree*> childs;
-    bool isLeaf;
 };
 
 void init_reduction();      // CFG 각 derivation에 대한 LHS, pop개수를 지정하는 함수
