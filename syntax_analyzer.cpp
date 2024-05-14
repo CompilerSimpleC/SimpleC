@@ -17,7 +17,7 @@ pair<int, int> reduction[33];       // first : GOTO table의 column값.     seco
 
 class tree{
 public:
-    string getitem(){
+    int getitem(){
         return this->item;
     }
     tree* getparent(){
@@ -30,7 +30,7 @@ public:
         return this->isLeaf;
     }
 
-    void setitem(string s){
+    void setitem(int s){
         this->item = s;
     }
     void setparent(tree* t){
@@ -43,7 +43,7 @@ public:
         this->isLeaf = b;
     }
 private:
-    string item; // type 아직 미지정
+    int item; // type 아직 미지정
     tree* parent;
     vector<tree*> childs;
     bool isLeaf;
@@ -267,7 +267,7 @@ int main(int argc, char* argv[]){
     while(!st.empty()){
         int input_data = tokens[pointer];
         pair<char, int> table_value = ACTION[st.top()][input_data];
-        cout << st.top() << " " << table_value.first << " " << table_value.second << endl;
+        cout << st.top() << " " << table_value.first << table_value.second << endl;
         
         if(table_value.first == 's'){       // shift
             pointer++;
