@@ -15,9 +15,6 @@ public:
     vector<tree*> getchilds() {
         return this->childs;
     }
-    bool getisLeaf() {
-        return this->isLeaf;
-    }
 
     void setitem(string s) {
         this->item = s;
@@ -25,13 +22,9 @@ public:
     void setchilds(vector<tree*> c) {
         this->childs = c;
     }
-    void setisLeaf(bool b) {
-        this->isLeaf = b;
-    }
 private:
     string item;
     vector<tree*> childs;
-    bool isLeaf;
 };
 
 bool isRoot = true;

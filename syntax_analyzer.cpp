@@ -6,6 +6,7 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include "treeVisualize.cpp"
 
 using namespace std;
 
@@ -15,33 +16,6 @@ enum nonterm{CODE, VDECL, ASSIGN, RHS, EXPR, TERM, FACTOR, FDECL, ARG, MOREARGS,
 pair<char, int> ACTION[74][21];     // row : state       column : terminals
 int G0T0[74][16];                   // row : state       column : non terminals
 pair<int, int> reduction[33];       // first : GOTO table의 column값.     second : pop할 개수
-
-class tree{
-
-public:
-    tree(string item){ // constructor
-        this->item = item;
-    }
-
-    // getter
-    string getitem(){
-        return this->item;
-    }
-    vector<tree*> getchilds(){
-        return this->childs;
-    }
-
-    // setter
-    void setitem(string s){
-        this->item = s;
-    }
-    void setchilds(vector<tree*> c){
-        this->childs = c;
-    }
-private:
-    string item;
-    vector<tree*> childs;
-};
 
 void init_reduction();      // CFG 각 derivation에 대한 LHS, pop개수를 지정하는 함수
 void InitializeGOTO();      // GOTO table 초기화
