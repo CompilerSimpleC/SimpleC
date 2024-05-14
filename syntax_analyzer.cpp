@@ -4,7 +4,6 @@
 #include <utility>
 #include <vector>
 #include <stack>
-#include <queue>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -119,7 +118,7 @@ int main(int argc, char* argv[]){
         int int_input_data = find_inttoken(input_data); // token의 int형(enum값)
         int state = state_stack.top();
         pair<char, int> table_value = ACTION[state][int_input_data];
-        cout << state << " " << input_data << " " << table_value.first << table_value.second << endl;
+        //cout << state << " " << input_data << " " << table_value.first << table_value.second << endl;
         
         if(table_value.first == 's'){       // shift
             pointer++;                      // splitter 이동
@@ -151,7 +150,7 @@ int main(int argc, char* argv[]){
             tree* parent_tree = make_child(table_value.second, child_vector); // 부모 자식 관계 설정
             token_stack.push(parent_tree); // queue에 부모 string push
             int push_value = G0T0[state_stack.top()][reduction[table_value.second].first]; // stack에 남은 state의 top과 derivation의 LHS의 GOTO table value
-            cout << "push token: " << parent_tree << ", push state: " << push_value << endl;
+            //cout << "push token: " << parent_tree << ", push state: " << push_value << endl;
             state_stack.push(push_value);       // GOTO table value를 state stack에 push
         }
         else if(table_value.first == 'a'){  // accept
@@ -177,7 +176,7 @@ int main(int argc, char* argv[]){
             root_tree = new tree("CODE");
             root_tree->setchilds(child_vector);
             
-            cout << "파싱 끝" << endl;
+            //cout << "파싱 끝" << endl;
             break;
         }
         else {
@@ -186,11 +185,13 @@ int main(int argc, char* argv[]){
             return 0;
         }
     }
-
+    
+    /*
     cout << "Hello world!" << endl;
     traversal(root_tree);
     cout << "\n\n";
-    
+    */
+
     vector<bool> stickStateStack;
     printTree(*root_tree, 0, stickStateStack, true);
     return 0;
