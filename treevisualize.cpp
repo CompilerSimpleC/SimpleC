@@ -29,45 +29,38 @@ public:
         this->isLeaf = b;
     }
 private:
-    string item; // type ¾ÆÁ÷ ¹ÌÁöÁ¤
+    string item;
     vector<tree*> childs;
     bool isLeaf;
 };
 
 bool isRoot = true;
-//1. ¾Õ¼± ½ºÆ½Ä«¿îÆ® Á¤»ê   2. Çìµå + ¾ÆÀÌÅÛ¸í Ãâ·Â   3. ÀÚ½Ä °¢°¢ printTree ÇÔ¼ö ½ÇÇà½ÃÅ°±â        level : Æ®¸®ÀÇ ±íÀÌ, stickStack : °¢ level º°·Î stickÀÌ Á¸ÀçÇÏ´ÂÁö ¿©ºÎ
-void printTree(tree root, int level, vector<bool> st, bool isFinalChild) //Ã³À½¿¡´Â level = 0 stickcnt=0 
+//1. ì•ì„  stickstack ì •ì‚°   2. í—¤ë“œ + ì•„ì´í…œëª… ì¶œë ¥   3. ìì‹ ê°ê° printTree í•¨ìˆ˜ ì‹¤í–‰ì‹œí‚¤ê¸°        level : íŠ¸ë¦¬ì˜ ê¹Šì´, stickStack : ê° level ë³„ë¡œ stickì´ ì¡´ì¬í•˜ëŠ”ì§€ ì—¬ë¶€
+void printTree(tree root, int level, vector<bool> st, bool isFinalChild) //ì²˜ìŒì—ëŠ” level = 0 stickstack = empty 
 {
     int i;
-    for (i = 0; i < level - 1; i++)
-    {
+    for (i = 0; i < level - 1; i++) {
         if (st[i])
-            cout << "¦¢  ";
+            cout << "Â¿  ";
         else
             cout << "   ";
-    }    
+    }
 
     string item = root.getitem();
-    if (!isRoot)
-    {
-        if (isFinalChild)
-        {
-            cout << "¦¦¦¡" << item;
+    if (!isRoot) {
+        if (isFinalChild) {
+            cout << "Â¿Â¿" << item;
             st.push_back(false);
-        }
-        else
-        {
-            cout << "¦§¦¡" << item;
+        } else {
+            cout << "Â¿Â¿" << item;
             st.push_back(true);
-        }       
-    }     
-    else
-    {
+        }
+    } else {
         cout << item;
         isRoot = false;
     }
     cout << "\n";
-   
+
     vector<tree*> childs = root.getchilds();
     int length = childs.size();
     int cnt = 1;
@@ -84,42 +77,4 @@ void printTree(tree root, int level, vector<bool> st, bool isFinalChild) //Ã³À½¿
         printTree(*it, level + 1, st, isFinal);
         cnt++;
     }
-}
-
-int main()
-{
-    tree root("root");
-    tree one("one");
-    tree two("two");
-    tree three("three");
-    tree four("four");
-    tree five("five");
-    tree six("six");
-    tree seven("seven");
-    tree eight("eight");
-    tree nine("nine");
-    tree ten("ten");
-    vector<tree*> child;
-    child.push_back(&one);
-    child.push_back(&two);
-    child.push_back(&three);
-    root.setchilds(child);
-    child.clear();
-    child.push_back(&four);
-    one.setchilds(child);
-    child.clear();
-    child.push_back(&five);
-    child.push_back(&six);
-    two.setchilds(child);
-    child.clear();
-    child.push_back(&seven);
-    child.push_back(&eight);
-    three.setchilds(child);
-    child.clear();
-    child.push_back(&nine);
-    child.push_back(&ten);
-    five.setchilds(child);
-
-    vector<bool> stickStateStack;
-    printTree(root, 0, stickStateStack, true);
 }
