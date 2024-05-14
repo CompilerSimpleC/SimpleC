@@ -1,18 +1,43 @@
 #include <cstdio>
-#include <iostream>
 #include <fstream>
 #include <string>
 #include <utility>
 #include <vector>
 #include <stack>
 #include <queue>
-#include "treeVisualize.cpp"
-
-using namespace std;
+#include <iostream>
+#include <vector>
+#include <string>
 
 enum term{vtype, id, semi, assign, literal, character, boolstr, addsub, multdiv, lparen, rparen, num, lbrace, rbrace, comma, iff, whilee, comp, elsee, returnn, dollor};
 enum nonterm{CODE, VDECL, ASSIGN, RHS, EXPR, TERM, FACTOR, FDECL, ARG, MOREARGS, BLOCK, STMT, COND, COND_, ELSE, RETURN};
+using namespace std;
 
+class tree {
+public:
+    tree(string item) {
+        this->item = item;
+    }
+
+    string getitem() {
+        return this->item;
+    }
+    vector<tree*> getchilds() {
+        return this->childs;
+    }
+
+    void setitem(string s) {
+        this->item = s;
+    }
+    void setchilds(vector<tree*> c) {
+        this->childs = c;
+    }
+private:
+    string item;
+    vector<tree*> childs;
+};
+
+bool isRoot = true;
 pair<char, int> ACTION[74][21];     // row : state       column : terminals
 int G0T0[74][16];                   // row : state       column : non terminals
 pair<int, int> reduction[33];       // first : GOTO table의 column값.     second : pop할 개수
@@ -22,6 +47,15 @@ void InitializeGOTO();      // GOTO table 초기화
 void init_ACTION();         // ACTION table 초기화
 int find_inttoken(const string s); // token string에 대해 token int로 반환
 string make_child(const int reduction_num, const vector<tree*> &childs); // CFG 번호로 부모 tree를 만들어서 자식 vector 할당 후 부모 string을 return
+void printTree(tree root, int level, vector<bool> st, bool isFinalChild);
+
+
+void traversal(tree* t){
+    vector<tree*> childs = t->getchilds();
+    cout << t->getitem() << " ";
+    for(auto it : childs) traversal(it);
+}
+
 
 int main(int argc, char* argv[]){
     // initialization of tables
@@ -77,6 +111,7 @@ int main(int argc, char* argv[]){
     // SLR Parsing
     stack<int> state_stack;   // state 
     queue<string> token_queue; // token
+    tree* root_tree;
 
     state_stack.push(0); // stack initialization
     int pointer = 0; // input pointer initialization
@@ -119,10 +154,10 @@ int main(int argc, char* argv[]){
             }
 
             // 부모 tree 만들고 자식vector 할당
-            tree* parent_tree = new tree("CODE");
-            parent_tree->setchilds(child_vector);
+            root_tree = new tree("CODE");
+            root_tree->setchilds(child_vector);
 
-            cout << "파싱 끝";
+            cout << "파싱 끝" << endl;
             break;
         }
         else {
@@ -131,6 +166,11 @@ int main(int argc, char* argv[]){
             return 0;
         }
     }
+    
+    traversal(root_tree);
+
+    vector<bool> stickStateStack;
+    printTree(*root_tree, 0, stickStateStack, true);
     return 0;
 }
 
@@ -315,4 +355,54 @@ string make_child(const int reduction_num, const vector<tree*> &childs){
     parent->setchilds(childs);
 
     return parent_item;
+}
+
+//1. 앞선 stickstack 정산   2. 헤드 + 아이템명 출력   3. 자식 각각 printTree 함수 실행시키기        level : 트리의 깊이, stickStack : 각 level 별로 stick이 존재하는지 여부
+void printTree(tree root, int level, vector<bool> st, bool isFinalChild) //처음에는 level = 0 stickstack = empty 
+{
+        int i;
+    for (i = 0; i < level - 1; i++)
+    {
+        if (st[i])
+            cout << "│  ";
+        else
+            cout << "   ";
+    }    
+
+    string item = root.getitem();
+    if (!isRoot)
+    {
+        if (isFinalChild)
+        {
+            cout << "└─" << item;
+            st.push_back(false);
+        }
+        else
+        {
+            cout << "├─" << item;
+            st.push_back(true);
+        }       
+    }     
+    else
+    {
+        cout << item;
+        isRoot = false;
+    }
+    cout << "\n";
+    vector<tree*> childs = root.getchilds();
+    int length = childs.size();
+    int cnt = 1;
+    bool isFinal = false;
+
+    if (childs.empty())
+        return;
+
+    for (auto it : childs)
+    {
+        if (cnt == length)
+            isFinal = true;
+
+        printTree(*it, level + 1, st, isFinal);
+        cnt++;
+    }
 }

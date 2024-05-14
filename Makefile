@@ -1,5 +1,5 @@
 CC= g++
-OBJS= syntax_analyzer.cpp treeVisualize.cpp
+OBJS= syntax_analyzer.cpp
 OUT = main.out
 INPUT = test.txt
 
