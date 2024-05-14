@@ -17,12 +17,11 @@ pair<int, int> reduction[33];       // first : GOTO table의 column값.     seco
 
 class tree{
 public:
-
-    tree(int item){
+    tree(string item){
         this->item = item;
     }
 
-    int getitem(){
+    string getitem(){
         return this->item;
     }
     vector<tree*> getchilds(){
@@ -32,7 +31,7 @@ public:
         return this->isLeaf;
     }
 
-    void setitem(int s){
+    void setitem(string s){
         this->item = s;
     }
     void setchilds(vector<tree*> c){
@@ -42,7 +41,7 @@ public:
         this->isLeaf = b;
     }
 private:
-    int item; // type 아직 미지정
+    string item; // type 아직 미지정
     vector<tree*> childs;
     bool isLeaf;
 };
@@ -181,7 +180,7 @@ void init_ACTION(){
     ACTION[1][dollor] = {'r', 2}; ACTION[3][dollor] = {'a', 0}; ACTION[4][dollor] = {'r', 2}; ACTION[8][dollor] = {'r', 1}; ACTION[10][dollor] = {'r', 3}; ACTION[12][dollor] = {'r', 4}; ACTION[52][dollor] = {'r', 17};
 }
 
-void push_item(vector<int> &v, const string s){
+/*void push_item(vector<int> &v, const string s){
     if (s == "vtype") v.push_back(vtype);
     else if (s == "num") v.push_back(num);
     else if (s == "character") v.push_back(character);
@@ -203,9 +202,33 @@ void push_item(vector<int> &v, const string s){
     else if (s == "rparen") v.push_back(rparen);
     else if (s == "lbrace") v.push_back(lbrace);
     else if (s == "rbrace") v.push_back(rbrace);
+}*/
+
+int find_inttoken(string s){
+    if (s == "vtype") return vtype; 
+    else if (s == "num") return num;
+    else if (s == "character") return character;
+    else if (s == "boolstr") return boolstr;
+    else if (s == "literal") return literal;
+    else if (s == "id") return id;
+    else if (s == "if") return iff;
+    else if (s == "else") return elsee;
+    else if (s == "while") return whilee;
+    else if (s == "return") return returnn;
+    else if (s == "addsub") return addsub;
+    else if (s == "multdiv") return multdiv;
+    else if (s == "assign") return assign;
+    else if (s == "comp") return comp;
+    else if (s == "semi") return semi;
+    else if (s == "comma") return comma;
+    else if (s == "lparen") return lparen;
+    else if (s == "rparen") return rparen;
+    else if (s == "lbrace") return lbrace;
+    else if (s == "rbrace") return rbrace;
+    else return -1;
 }
 
-void make_child(const int reduction_num, const vector<tree*> &childs){
+/*void make_child(const int reduction_num, const vector<tree*> &childs){
     int parent_item;
     if(0 <= reduction_num && reduction_num <= 2) parent_item = CODE;
     else if(3 <= reduction_num && reduction_num <= 4) parent_item = VDECL;
@@ -225,6 +248,30 @@ void make_child(const int reduction_num, const vector<tree*> &childs){
     else return;
     tree* parent = new tree(parent_item);
     parent->setchilds(childs);
+}*/
+
+string make_child(const int reduction_num, const vector<tree*> &childs){
+    string parent_item;
+    if(0 <= reduction_num && reduction_num <= 2) parent_item = "CODE";
+    else if(3 <= reduction_num && reduction_num <= 4) parent_item = "VDECL";
+    else if(reduction_num == 5) parent_item = "ASSIGN";
+    else if(6 <= reduction_num && reduction_num <= 9) parent_item = "RHS";
+    else if(10 <= reduction_num && reduction_num <= 12) parent_item = "EXPR";
+    else if(13 <= reduction_num && reduction_num <= 14) parent_item = "TERM";
+    else if(15 <= reduction_num && reduction_num <= 16) parent_item = "FACTOR";
+    else if(reduction_num == 17) parent_item = "FDECL";
+    else if(18 <= reduction_num && reduction_num <= 19) parent_item = "ARG";
+    else if(20 <= reduction_num && reduction_num <= 21) parent_item = "MOREARGS";
+    else if(22 <= reduction_num && reduction_num <= 23) parent_item = "BLOCK";
+    else if(24 <= reduction_num && reduction_num <= 27) parent_item = "STMT";
+    else if(28 <= reduction_num && reduction_num <= 29) parent_item = "COND";
+    else if(30 <= reduction_num && reduction_num <= 31) parent_item = "ELSE";
+    else if(reduction_num == 32) parent_item = "RETURN";
+    else return NULL;
+    tree* parent = new tree(parent_item);
+    parent->setchilds(childs);
+
+    return parent_item;
 }
 
 int main(int argc, char* argv[]){
@@ -259,12 +306,14 @@ int main(int argc, char* argv[]){
     getline(myfile, input);
 
     // token 넣기
-    vector<int> tokens;
+    vector<string> tokens;
+    //vector<int> tokens;
     string temp = "";
     for(int i = 0 ; i < input.length(); i++){
         if(input[i] == ' '){
             if(temp != "") {
-                push_item(tokens, temp);
+                //push_item(tokens, temp);
+                tokens.push_back(temp);
                 temp = "";
             }
         }
@@ -272,39 +321,48 @@ int main(int argc, char* argv[]){
             if(input[i] != ' '){
                 temp += input[i];
             }
-            push_item(tokens, temp);
+            //push_item(tokens, temp);
+            tokens.push_back(temp);
         }
         else temp += input[i];
     } 
-    tokens.push_back(dollor);
+    tokens.push_back("dollor");
     
     // SLR Parsing
-    stack<int> st;
+    stack<int> state_stack;   // state 
+    stack<string> token_stack; // token
 
-    st.push(0); // stack initialization
+    state_stack.push(0); // stack initialization
     int pointer = 0; // input pointer initialization
 
-    while(!st.empty()){
-        int input_data = tokens[pointer];
-        pair<char, int> table_value = ACTION[st.top()][input_data];
-        cout << st.top() << " " << table_value.first << table_value.second << endl;
+    while(!state_stack.empty()){
+        //int input_data = tokens[pointer];
+        string input_data = tokens[pointer];
+        int int_input_data = find_inttoken(input_data); // input_data의 int형(enum값)
+        int state = state_stack.top();
+        pair<char, int> table_value = ACTION[state][int_input_data];
+        cout << state << " " << input_data << " " << table_value.first << table_value.second << endl;
         
         if(table_value.first == 's'){       // shift
             pointer++;
-            st.push(table_value.second);
+            state_stack.push(table_value.second);
+            token_stack.push(input_data);
         }
         else if(table_value.first == 'r'){  // reduce
             int pop_cnt = reduction[table_value.second].second;
             vector<tree*> treeVector;
             for(int i = 0; i < pop_cnt; i++) {
-                //tree* new_tree = new tree(st.top()); // 자식 트리 생성
-                //treeVector.push_back(new_tree);      // 자식 벡터에 추가
-                st.pop();
+                string poped_token = token_stack.top();
+                tree* new_tree = new tree(poped_token); // 자식 트리 생성
+                treeVector.push_back(new_tree);      // 자식 벡터에 추가
+                state_stack.pop();
+                token_stack.pop();
             }
-            make_child(table_value.second, treeVector); // 부모 자식 관계 설정
-
-            int push_value = G0T0[st.top()][reduction[table_value.second].first];
-            st.push(push_value);
+            string parent_token = make_child(table_value.second, treeVector); // 부모 자식 관계 설정
+            token_stack.push(parent_token);
+            int push_value = G0T0[state][reduction[table_value.second].first];
+            cout << "push token: " << parent_token << ", push state: " << push_value << endl;
+            state_stack.push(push_value);
         }
         else if(table_value.first == 'a'){  // accept
             // 여기에 트리 생성   
@@ -313,7 +371,7 @@ int main(int argc, char* argv[]){
         }
         else {
             // 에러처리. 파싱에러
-            cout << "Error: not matched ACTION table at [" << st.top() << ", " << input_data << "]" << endl;
+            cout << "Error: not matched ACTION table at [" << state_stack.top() << ", " << input_data << "]" << endl;
             return 0;
         }
     }
