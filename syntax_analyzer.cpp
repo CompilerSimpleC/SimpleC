@@ -19,10 +19,11 @@ pair<int, int> reduction[33];       // first : GOTO table의 column값.     seco
 class tree{
 
 public:
-    tree(string item){
+    tree(string item){ // constructor
         this->item = item;
     }
 
+    // getter
     string getitem(){
         return this->item;
     }
@@ -33,6 +34,7 @@ public:
         return this->isLeaf;
     }
 
+    // setter
     void setitem(string s){
         this->item = s;
     }
@@ -48,11 +50,11 @@ private:
     bool isLeaf;
 };
 
-void init_reduction();
-void InitializeGOTO();
-void init_ACTION();
-int find_inttoken(const string s);
-string make_child(const int reduction_num, const vector<tree*> &childs);
+void init_reduction();      // CFG 각 derivation에 대한 LHS, pop개수를 지정하는 함수
+void InitializeGOTO();      // GOTO table 초기화
+void init_ACTION();         // ACTION table 초기화
+int find_inttoken(const string s); // token string에 대해 token int로 반환
+string make_child(const int reduction_num, const vector<tree*> &childs); // CFG 번호로 부모 tree를 만들어서 자식 vector 할당 후 부모 string을 return
 
 int main(int argc, char* argv[]){
     // initialization of tables
@@ -87,12 +89,10 @@ int main(int argc, char* argv[]){
 
     // token 넣기
     vector<string> tokens;
-    //vector<int> tokens;
     string temp = "";
     for(int i = 0 ; i < input.length(); i++){
         if(input[i] == ' '){
             if(temp != "") {
-                //push_item(tokens, temp);
                 tokens.push_back(temp);
                 temp = "";
             }
@@ -101,7 +101,6 @@ int main(int argc, char* argv[]){
             if(input[i] != ' '){
                 temp += input[i];
             }
-            //push_item(tokens, temp);
             tokens.push_back(temp);
         }
         else temp += input[i];
@@ -116,42 +115,43 @@ int main(int argc, char* argv[]){
     int pointer = 0; // input pointer initialization
 
     while(!state_stack.empty()){
-        //int input_data = tokens[pointer];
-        string input_data = tokens[pointer];
-        int int_input_data = find_inttoken(input_data); // input_data의 int형(enum값)
+        string input_data = tokens[pointer];            // right token of splitter 추출
+        int int_input_data = find_inttoken(input_data); // token의 int형(enum값)
         int state = state_stack.top();
         pair<char, int> table_value = ACTION[state][int_input_data];
         cout << state << " " << input_data << " " << table_value.first << table_value.second << endl;
         
         if(table_value.first == 's'){       // shift
-            pointer++;
-            state_stack.push(table_value.second);
-            token_queue.push(input_data);
+            pointer++;                      // splitter 이동
+            state_stack.push(table_value.second);   // table에 있는 state push
+            token_queue.push(input_data);           // 읽은 token queue에 push(나중에 자식으로 만들기 위함)
         }
         else if(table_value.first == 'r'){  // reduce
-            int pop_cnt = reduction[table_value.second].second;
+            int pop_cnt = reduction[table_value.second].second;     // 해당 CFG derivation의 RHS 개수만큼 pop
             vector<tree*> child_vector;
             for(int i = 0; i < pop_cnt; i++) {
                 string poped_token = token_queue.front();
                 tree* new_tree = new tree(poped_token); // 자식 트리 생성
-                child_vector.push_back(new_tree);      // 자식 벡터에 추가
+                child_vector.push_back(new_tree);      // 자식 벡터에 자식 추가
                 state_stack.pop();
                 token_queue.pop();
             }
             string parent_token = make_child(table_value.second, child_vector); // 부모 자식 관계 설정
-            token_queue.push(parent_token);
-            int push_value = G0T0[state_stack.top()][reduction[table_value.second].first];
+            token_queue.push(parent_token); // queue에 부모 string push
+            int push_value = G0T0[state_stack.top()][reduction[table_value.second].first]; // stack에 남은 state의 top과 derivation의 LHS의 GOTO table value
             cout << "push token: " << parent_token << ", push state: " << push_value << endl;
-            state_stack.push(push_value);
+            state_stack.push(push_value);       // GOTO table value를 state stack에 push
         }
         else if(table_value.first == 'a'){  // accept
+            //자식 vector 설정, token queue에 있는 모든 string을 자식으로 만듦
             vector<tree*> child_vector;
-            while(!token_queue.empty()){
+            while(!token_queue.empty()){    
                 tree* child_tree = new tree(token_queue.front());
                 child_vector.push_back(child_tree);
                 token_queue.pop();
             }
 
+            // 부모 tree 만들고 자식vector 할당
             tree* parent_tree = new tree("CODE");
             parent_tree->setchilds(child_vector);
 
