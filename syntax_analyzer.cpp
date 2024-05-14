@@ -15,6 +15,40 @@ pair<char, int> ACTION[74][21];     // row : state       column : terminals
 int G0T0[74][16];                   // row : state       column : non terminals
 pair<int, int> reduction[33];       // first : GOTO table의 column값.     second : pop할 개수
 
+class tree{
+public:
+    string getitem(){
+        return this->item;
+    }
+    tree* getparent(){
+        return this->parent;
+    }
+    vector<tree*> getchilds(){
+        return this->childs;
+    }
+    bool getisLeaf(){
+        return this->isLeaf;
+    }
+
+    void setitem(string s){
+        this->item = s;
+    }
+    void setparent(tree* t){
+        this->parent = t;
+    }
+    void setchilds(vector<tree*> c){
+        this->childs = c;
+    }
+    void setisLeaf(bool b){
+        this->isLeaf = b;
+    }
+private:
+    string item; // type 아직 미지정
+    tree* parent;
+    vector<tree*> childs;
+    bool isLeaf;
+};
+
 void init_reduction(){
     reduction[0].first = CODE; reduction[0].second = 2;         // CODE -> VDECL CODE
     reduction[1].first = CODE; reduction[1].second = 2;         // CODE -> FDECL CODE 
