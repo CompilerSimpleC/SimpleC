@@ -142,6 +142,12 @@ int main(int argc, char* argv[]){
                 child_vector.push_back(temp.top());      // 자식 벡터에 자식 추가
                 temp.pop();
             }
+
+            if(child_vector.size() == 0){
+                tree* epsilon_tree = new tree("epsilon");
+                child_vector.push_back(epsilon_tree);
+            }
+
             tree* parent_tree = make_child(table_value.second, child_vector); // 부모 자식 관계 설정
             token_stack.push(parent_tree); // queue에 부모 string push
             int push_value = G0T0[state_stack.top()][reduction[table_value.second].first]; // stack에 남은 state의 top과 derivation의 LHS의 GOTO table value
@@ -162,10 +168,15 @@ int main(int argc, char* argv[]){
                 temp.pop();
             }
 
+            if(child_vector.size() == 0){
+                tree* epsilon_tree = new tree("epsilon");
+                child_vector.push_back(epsilon_tree);
+            }
+
             // 부모 tree 만들고 자식vector 할당
             root_tree = new tree("CODE");
             root_tree->setchilds(child_vector);
-
+            
             cout << "파싱 끝" << endl;
             break;
         }
