@@ -48,12 +48,6 @@ int find_inttoken(const string s); // token string에 대해 token int로 반환
 tree* make_child(const int reduction_num, const vector<tree*> &childs); // CFG 번호로 부모 tree를 만들어서 자식 vector 할당 후 부모 string을 return
 void printTree(tree root, int level, vector<bool> st, bool isFinalChild);
 
-void traversal(tree* t){
-    cout << t->getitem() << " ";
-    vector<tree*> v = t->getchilds();
-    for(auto it : v) traversal(it);
-}
-
 int main(int argc, char* argv[]){
     // initialization of tables
     init_ACTION();
@@ -118,7 +112,6 @@ int main(int argc, char* argv[]){
         int int_input_data = find_inttoken(input_data); // token의 int형(enum값)
         int state = state_stack.top();
         pair<char, int> table_value = ACTION[state][int_input_data];
-        //cout << state << " " << input_data << " " << table_value.first << table_value.second << endl;
         
         if(table_value.first == 's'){       // shift
             pointer++;                      // splitter 이동
@@ -150,7 +143,6 @@ int main(int argc, char* argv[]){
             tree* parent_tree = make_child(table_value.second, child_vector); // 부모 자식 관계 설정
             token_stack.push(parent_tree); // queue에 부모 string push
             int push_value = G0T0[state_stack.top()][reduction[table_value.second].first]; // stack에 남은 state의 top과 derivation의 LHS의 GOTO table value
-            //cout << "push token: " << parent_tree << ", push state: " << push_value << endl;
             state_stack.push(push_value);       // GOTO table value를 state stack에 push
         }
         else if(table_value.first == 'a'){  // accept
@@ -175,23 +167,16 @@ int main(int argc, char* argv[]){
             // 부모 tree 만들고 자식vector 할당
             root_tree = new tree("CODE");
             root_tree->setchilds(child_vector);
-            
-            //cout << "파싱 끝" << endl;
             break;
         }
         else {
             // 에러처리. 파싱에러
-            cout << "Error: not matched ACTION table at [" << state_stack.top() << ", " << input_data << "]" << endl;
+            cout << "Error: Token" << input_data <<  "not matched ACTION table at [" << state_stack.top() << ", " << input_data << "]" << endl;
             return 0;
         }
     }
     
-    /*
-    cout << "Hello world!" << endl;
-    traversal(root_tree);
-    cout << "\n\n";
-    */
-
+    // representation of parse tree
     vector<bool> stickStateStack;
     printTree(*root_tree, 0, stickStateStack, true);
     return 0;
@@ -380,6 +365,7 @@ tree* make_child(const int reduction_num, const vector<tree*> &childs){
     return parent;
 }
 
+// parse tree representation
 //1. 앞선 stickstack 정산   2. 헤드 + 아이템명 출력   3. 자식 각각 printTree 함수 실행시키기        level : 트리의 깊이, stickStack : 각 level 별로 stick이 존재하는지 여부
 void printTree(tree root, int level, vector<bool> st, bool isFinalChild) //처음에는 level = 0 stickstack = empty 
 {
