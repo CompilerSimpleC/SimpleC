@@ -171,7 +171,7 @@ int main(int argc, char* argv[]){
         }
         else {
             // 에러처리. 파싱에러
-            cout << "Error: Token" << input_data <<  "not matched ACTION table at [" << state_stack.top() << ", " << input_data << "]" << endl;
+            cout << "Error: Token <" << input_data <<  "> not matched with ACTION table at [" << state_stack.top() << ", " << input_data << "]" << endl;
             return 0;
         }
     }
