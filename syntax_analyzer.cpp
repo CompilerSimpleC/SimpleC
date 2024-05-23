@@ -159,11 +159,6 @@ int main(int argc, char* argv[]){
                 temp.pop();
             }
 
-            if(child_vector.size() == 0){
-                tree* epsilon_tree = new tree("epsilon");
-                child_vector.push_back(epsilon_tree);
-            }
-
             // 부모 tree 만들고 자식vector 할당
             root_tree = new tree("CODE'");
             root_tree->setchilds(child_vector);
