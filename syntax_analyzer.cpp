@@ -118,7 +118,7 @@ int main(int argc, char* argv[]){
             state_stack.push(table_value.second);   // table에 있는 state push
             
             tree* t = new tree(input_data);
-            token_stack.push(t);           // 읽은 token queue에 push(나중에 자식으로 만들기 위함)
+            token_stack.push(t);           // 읽은 token stack에 push(나중에 자식으로 만들기 위함)
         }
         else if(table_value.first == 'r'){  // reduce
             int pop_cnt = reduction[table_value.second].second;     // 해당 CFG derivation의 RHS 개수만큼 pop
@@ -141,12 +141,12 @@ int main(int argc, char* argv[]){
             }
 
             tree* parent_tree = make_child(table_value.second, child_vector); // 부모 자식 관계 설정
-            token_stack.push(parent_tree); // queue에 부모 string push
+            token_stack.push(parent_tree); // stack에 부모 string push
             int push_value = G0T0[state_stack.top()][reduction[table_value.second].first]; // stack에 남은 state의 top과 derivation의 LHS의 GOTO table value
             state_stack.push(push_value);       // GOTO table value를 state stack에 push
         }
         else if(table_value.first == 'a'){  // accept
-            //자식 vector 설정, token queue에 있는 모든 string을 자식으로 만듦
+            //자식 vector 설정, token stack에 있는 모든 string을 자식으로 만듦
             vector<tree*> child_vector;
             stack<tree*> temp;
             while(!token_stack.empty()){    
