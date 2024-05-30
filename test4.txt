@@ -1,1 +1,1 @@
-vtype id semi
+vtype id lparen rparen lbrace while lparen boolstr rparen lbrace id assign num multdiv num semi rbrace return num semi rbrace

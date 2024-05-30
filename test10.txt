@@ -1,0 +1,1 @@
+vtype id assign num semi vtype id assign literal semi vtype id assign character semi vtype id assign boolstr semi
