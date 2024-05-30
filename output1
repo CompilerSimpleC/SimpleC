@@ -1,4 +1,4 @@
-./main.out test1.txt
+./main.out input1
 CODE'
 └─CODE
    ├─VDECL

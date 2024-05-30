@@ -1,2 +1,2 @@
-./main.out test9.txt
+./main.out input9
 Error: Token <lbrace> not matched with ACTION table at [9, lbrace]

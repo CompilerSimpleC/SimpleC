@@ -1,16 +1,16 @@
 CC= g++
 OBJS= syntax_analyzer.cpp
 OUT = main.out
-INPUT1 = test1.txt
-INPUT2 = test2.txt
-INPUT3 = test3.txt
-INPUT4 = test4.txt
-INPUT5 = test5.txt
-INPUT6 = test6.txt
-INPUT7 = test7.txt
-INPUT8 = test8.txt
-INPUT9 = test9.txt
-INPUT10 = test10.txt
+INPUT1 = input1
+INPUT2 = input2 
+INPUT3 = input3
+INPUT4 = input4
+INPUT5 = input5
+INPUT6 = input6
+INPUT7 = input7
+INPUT8 = input8
+INPUT9 = input9
+INPUT10 = input10
 
 all: $(OUT)
 
