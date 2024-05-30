@@ -1,0 +1,21 @@
+./main.out test5.txt
+CODE'
+└─CODE
+   ├─FDECL
+   │  ├─vtype
+   │  ├─id
+   │  ├─lparen
+   │  ├─ARG
+   │  │  └─epsilon
+   │  ├─rparen
+   │  ├─lbrace
+   │  ├─BLOCK
+   │  │  └─epsilon
+   │  ├─RETURN
+   │  │  ├─return
+   │  │  ├─RHS
+   │  │  │  └─literal
+   │  │  └─semi
+   │  └─rbrace
+   └─CODE
+      └─epsilon

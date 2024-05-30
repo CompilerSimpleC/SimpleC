@@ -1,0 +1,2 @@
+./main.out test2.txt
+Error: Token <dollar> not matched with ACTION table at [68, dollar]

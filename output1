@@ -1,0 +1,59 @@
+./main.out test1.txt
+CODE'
+└─CODE
+   ├─VDECL
+   │  ├─vtype
+   │  ├─id
+   │  └─semi
+   └─CODE
+      ├─FDECL
+      │  ├─vtype
+      │  ├─id
+      │  ├─lparen
+      │  ├─ARG
+      │  │  └─epsilon
+      │  ├─rparen
+      │  ├─lbrace
+      │  ├─BLOCK
+      │  │  ├─STMT
+      │  │  │  ├─if
+      │  │  │  ├─lparen
+      │  │  │  ├─COND
+      │  │  │  │  ├─COND
+      │  │  │  │  │  └─boolstr
+      │  │  │  │  ├─comp
+      │  │  │  │  └─boolstr
+      │  │  │  ├─rparen
+      │  │  │  ├─lbrace
+      │  │  │  ├─BLOCK
+      │  │  │  │  └─epsilon
+      │  │  │  ├─rbrace
+      │  │  │  └─ELSE
+      │  │  │     └─epsilon
+      │  │  └─BLOCK
+      │  │     └─epsilon
+      │  ├─RETURN
+      │  │  ├─return
+      │  │  ├─RHS
+      │  │  │  └─literal
+      │  │  └─semi
+      │  └─rbrace
+      └─CODE
+         ├─VDECL
+         │  ├─vtype
+         │  ├─ASSIGN
+         │  │  ├─id
+         │  │  ├─assign
+         │  │  └─RHS
+         │  │     └─EXPR
+         │  │        ├─EXPR
+         │  │        │  └─TERM
+         │  │        │     └─FACTOR
+         │  │        │        └─num
+         │  │        ├─addsub
+         │  │        └─TERM
+         │  │           └─FACTOR
+         │  │              └─id
+         │  └─semi
+         └─CODE
+            └─epsilon

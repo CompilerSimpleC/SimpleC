@@ -1,0 +1,50 @@
+./main.out test4.txt
+CODE'
+└─CODE
+   ├─FDECL
+   │  ├─vtype
+   │  ├─id
+   │  ├─lparen
+   │  ├─ARG
+   │  │  └─epsilon
+   │  ├─rparen
+   │  ├─lbrace
+   │  ├─BLOCK
+   │  │  ├─STMT
+   │  │  │  ├─while
+   │  │  │  ├─lparen
+   │  │  │  ├─COND
+   │  │  │  │  └─boolstr
+   │  │  │  ├─rparen
+   │  │  │  ├─lbrace
+   │  │  │  ├─BLOCK
+   │  │  │  │  ├─STMT
+   │  │  │  │  │  ├─ASSIGN
+   │  │  │  │  │  │  ├─id
+   │  │  │  │  │  │  ├─assign
+   │  │  │  │  │  │  └─RHS
+   │  │  │  │  │  │     └─EXPR
+   │  │  │  │  │  │        └─TERM
+   │  │  │  │  │  │           ├─TERM
+   │  │  │  │  │  │           │  └─FACTOR
+   │  │  │  │  │  │           │     └─num
+   │  │  │  │  │  │           ├─multdiv
+   │  │  │  │  │  │           └─FACTOR
+   │  │  │  │  │  │              └─num
+   │  │  │  │  │  └─semi
+   │  │  │  │  └─BLOCK
+   │  │  │  │     └─epsilon
+   │  │  │  └─rbrace
+   │  │  └─BLOCK
+   │  │     └─epsilon
+   │  ├─RETURN
+   │  │  ├─return
+   │  │  ├─RHS
+   │  │  │  └─EXPR
+   │  │  │     └─TERM
+   │  │  │        └─FACTOR
+   │  │  │           └─num
+   │  │  └─semi
+   │  └─rbrace
+   └─CODE
+      └─epsilon

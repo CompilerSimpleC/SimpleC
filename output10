@@ -1,0 +1,43 @@
+./main.out test10.txt
+CODE'
+└─CODE
+   ├─VDECL
+   │  ├─vtype
+   │  ├─ASSIGN
+   │  │  ├─id
+   │  │  ├─assign
+   │  │  └─RHS
+   │  │     └─EXPR
+   │  │        └─TERM
+   │  │           └─FACTOR
+   │  │              └─num
+   │  └─semi
+   └─CODE
+      ├─VDECL
+      │  ├─vtype
+      │  ├─ASSIGN
+      │  │  ├─id
+      │  │  ├─assign
+      │  │  └─RHS
+      │  │     └─literal
+      │  └─semi
+      └─CODE
+         ├─VDECL
+         │  ├─vtype
+         │  ├─ASSIGN
+         │  │  ├─id
+         │  │  ├─assign
+         │  │  └─RHS
+         │  │     └─character
+         │  └─semi
+         └─CODE
+            ├─VDECL
+            │  ├─vtype
+            │  ├─ASSIGN
+            │  │  ├─id
+            │  │  ├─assign
+            │  │  └─RHS
+            │  │     └─boolstr
+            │  └─semi
+            └─CODE
+               └─epsilon

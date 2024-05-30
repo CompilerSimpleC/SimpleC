@@ -1,0 +1,2 @@
+./main.out test6.txt
+Error: Token <comma> not matched with ACTION table at [7, comma]

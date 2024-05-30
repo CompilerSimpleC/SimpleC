@@ -1,0 +1,39 @@
+./main.out test7.txt
+CODE'
+└─CODE
+   ├─VDECL
+   │  ├─vtype
+   │  ├─ASSIGN
+   │  │  ├─id
+   │  │  ├─assign
+   │  │  └─RHS
+   │  │     └─EXPR
+   │  │        ├─EXPR
+   │  │        │  ├─EXPR
+   │  │        │  │  ├─EXPR
+   │  │        │  │  │  └─TERM
+   │  │        │  │  │     └─FACTOR
+   │  │        │  │  │        └─id
+   │  │        │  │  ├─addsub
+   │  │        │  │  └─TERM
+   │  │        │  │     ├─TERM
+   │  │        │  │     │  └─FACTOR
+   │  │        │  │     │     └─id
+   │  │        │  │     ├─multdiv
+   │  │        │  │     └─FACTOR
+   │  │        │  │        └─id
+   │  │        │  ├─addsub
+   │  │        │  └─TERM
+   │  │        │     └─FACTOR
+   │  │        │        └─id
+   │  │        ├─addsub
+   │  │        └─TERM
+   │  │           ├─TERM
+   │  │           │  └─FACTOR
+   │  │           │     └─id
+   │  │           ├─multdiv
+   │  │           └─FACTOR
+   │  │              └─id
+   │  └─semi
+   └─CODE
+      └─epsilon

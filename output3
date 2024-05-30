@@ -1,0 +1,57 @@
+./main.out test3.txt
+CODE'
+└─CODE
+   ├─FDECL
+   │  ├─vtype
+   │  ├─id
+   │  ├─lparen
+   │  ├─ARG
+   │  │  ├─vtype
+   │  │  ├─id
+   │  │  └─MOREARGS
+   │  │     ├─comma
+   │  │     ├─vtype
+   │  │     ├─id
+   │  │     └─MOREARGS
+   │  │        ├─comma
+   │  │        ├─vtype
+   │  │        ├─id
+   │  │        └─MOREARGS
+   │  │           └─epsilon
+   │  ├─rparen
+   │  ├─lbrace
+   │  ├─BLOCK
+   │  │  ├─STMT
+   │  │  │  ├─if
+   │  │  │  ├─lparen
+   │  │  │  ├─COND
+   │  │  │  │  ├─COND
+   │  │  │  │  │  ├─COND
+   │  │  │  │  │  │  └─boolstr
+   │  │  │  │  │  ├─comp
+   │  │  │  │  │  └─boolstr
+   │  │  │  │  ├─comp
+   │  │  │  │  └─boolstr
+   │  │  │  ├─rparen
+   │  │  │  ├─lbrace
+   │  │  │  ├─BLOCK
+   │  │  │  │  ├─STMT
+   │  │  │  │  │  └─VDECL
+   │  │  │  │  │     ├─vtype
+   │  │  │  │  │     ├─id
+   │  │  │  │  │     └─semi
+   │  │  │  │  └─BLOCK
+   │  │  │  │     └─epsilon
+   │  │  │  ├─rbrace
+   │  │  │  └─ELSE
+   │  │  │     └─epsilon
+   │  │  └─BLOCK
+   │  │     └─epsilon
+   │  ├─RETURN
+   │  │  ├─return
+   │  │  ├─RHS
+   │  │  │  └─literal
+   │  │  └─semi
+   │  └─rbrace
+   └─CODE
+      └─epsilon
